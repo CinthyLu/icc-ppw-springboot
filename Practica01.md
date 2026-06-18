@@ -102,3 +102,43 @@ El endpoint `/api/status` funciona de la siguiente manera:
 * **Servidor Embebido (Tomcat):** Spring Boot facilita el desarrollo web al incluir Tomcat por defecto dentro del empaquetado del proyecto. Esto elimina la necesidad de instalar, configurar y desplegar la aplicación en un servidor de aplicaciones externo de manera manual.
 * **Auto-configuración (Opinionated):** Spring Boot detecta de manera inteligente las dependencias en `build.gradle` (como `spring-boot-starter-web`) y auto-configura los componentes necesarios (el despachador de peticiones `DispatcherServlet`, los serializadores JSON Jackson, etc.) sin necesidad de archivos de configuración XML complejos.
 * **Inyección de Dependencias y Anotaciones:** Facilita la creación de servicios modulares desacoplados, permitiendo definir controladores HTTP con anotaciones simples como `@RestController` y `@GetMapping`.
+
+---
+
+## 6. Práctica 01-A: Configuración YAML y Entidad Estudiantes
+
+En esta sección adicional se realizó una refactorización de la configuración y se extendió la API para gestionar una colección de estudiantes.
+
+### A. Cambio de `application.properties` a `application.yml`
+Se eliminó el archivo `application.properties` y se creó `application.yml` en su lugar (`src/main/resources/application.yml`). Esto permite una configuración más legible y estructurada. Se definió el puerto del servidor en `8080` y se estableció el prefijo de contexto `/api` para todos los endpoints:
+
+```yaml
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: fundamentos01
+```
+
+### B. Creación de la Estructura para Estudiantes
+Se creó la carpeta de paquete `students` (`ec.edu.ups.icc.fundamentos01.students`), dividida en subcarpetas/paquetes:
+1. **Modelos (`students.models`):** Contiene la clase `Student.java` con los atributos `id` (Long), `name` (String) y `age` (int), junto con sus respectivos métodos constructor, getters y setters.
+2. **Controladores (`students.controllers`):** Contiene la clase `StudentController.java` anotada con `@RestController` y `@RequestMapping("/students")` para manejar las peticiones web.
+
+### C. Implementación y Verificación de Endpoints
+
+#### 1. Endpoint `/students` (Listado Completo)
+Devuelve la lista con la información de los estudiantes cargados en el controlador:
+* **URL:** `http://localhost:8080/api/students`
+* **Evidencia Visual:**
+![Listado de Estudiantes](assets/01_getStudents.png)
+
+#### 2. Endpoint `/students/count` (Total de Estudiantes)
+Devuelve una cadena con el número total de estudiantes registrados:
+* **URL:** `http://localhost:8080/api/students/count`
+* **Evidencia Visual:**
+![Conteo de Estudiantes](assets/01_studentsCount.png)
+
