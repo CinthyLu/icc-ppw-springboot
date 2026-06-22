@@ -11,11 +11,13 @@
 
 ### Autores
 
-**Pablo Torres**
+**Cinthya Ramón**
 
-[ptorresp@ups.edu.ec](mailto:ptorresp@ups.edu.ec)
+[cramonm1@ups.edu.ec](mailto:[cramonm1@ups.edu.ec])
 
-GitHub: [PabloT18](https://github.com/PabloT18)
+GitHub: [CinthyLu](https://github.com/CinthyLu)
+
+
 
 ---
 
