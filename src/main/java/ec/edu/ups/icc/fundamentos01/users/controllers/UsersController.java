@@ -1,9 +1,8 @@
 package ec.edu.ups.icc.fundamentos01.users.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,99 +13,69 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ec.edu.ups.icc.fundamentos01.core.dto.ErrorResponseDto;
 import ec.edu.ups.icc.fundamentos01.users.dtos.CreateUserDto;
 import ec.edu.ups.icc.fundamentos01.users.dtos.PartialUpdateUserDto;
 import ec.edu.ups.icc.fundamentos01.users.dtos.UpdateUserDto;
 import ec.edu.ups.icc.fundamentos01.users.dtos.UserResponseDto;
-import ec.edu.ups.icc.fundamentos01.users.mappers.UserMapper;
-import ec.edu.ups.icc.fundamentos01.users.models.UserModel;
+import ec.edu.ups.icc.fundamentos01.users.services.UserService;
 
-/*
- * REST controller encargado de exponer los puntos finales HTTP
- * para la gestión de usuarios mediante programación funcional.
- */
 @RestController
-
-
 @RequestMapping("/users")
 public class UsersController {
 
-    private final List<UserModel> users = new ArrayList<>();
-    private final AtomicLong currentId = new AtomicLong(1);
+    private final UserService service;
 
-//GET LISTA DE USUARIOS
+    public UsersController(UserService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public List<UserResponseDto> findAll() {
-        return users.stream()
-                .map(UserMapper::toResponse)
-                .toList();
+        return service.findAll();
     }
-//GET OBTENER USUARIO POR ID 
+
     @GetMapping("/{id}")
-    public Object findOne(@PathVariable Long id) {
-        return users.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst()
-                .map(user -> (Object) UserMapper.toResponse(user))
-                .orElseGet(() -> new Object() {
-                    public String error = "User not found";
-                });
+    public ResponseEntity<Object> findOne(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.findOne(id));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(e.getMessage()));
+        }
     }
-// CORRRECION DEL POST API/USERS PARA QUE GENERE AUTOMATICAMENTE EL ID 
-// ID unico para cada ususario creado 
+
     @PostMapping
-    public UserResponseDto create(@RequestBody CreateUserDto dto) {
-        UserModel user = UserMapper.toModel(dto);
-        user.setId(currentId.getAndIncrement());
-        users.add(user);
-        return UserMapper.toResponse(user);
+    public ResponseEntity<UserResponseDto> create(@RequestBody CreateUserDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
     @PutMapping("/{id}")
-    public Object update(@PathVariable Long id, @RequestBody UpdateUserDto dto) {
-        return users.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst()
-                .map(user -> {
-                    user.setName(dto.getName());
-                    user.setEmail(dto.getEmail());
-                    return (Object) UserMapper.toResponse(user);
-                })
-                .orElseGet(() -> new Object() {
-                    public String error = "UserModel not found";
-                });
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody UpdateUserDto dto) {
+        try {
+            return ResponseEntity.ok(service.update(id, dto));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(e.getMessage()));
+        }
     }
 
     @PatchMapping("/{id}")
-    public Object partialUpdate(@PathVariable Long id, @RequestBody PartialUpdateUserDto dto) {
-        return users.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst()
-                .map(user -> {
-                    if (dto.getName() != null) {
-                        user.setName(dto.getName());
-                    }
-                    if (dto.getEmail() != null) {
-                        user.setEmail(dto.getEmail());
-                    }
-                    return (Object) UserMapper.toResponse(user);
-                })
-                .orElseGet(() -> new Object() {
-                    public String error = "UserModel not found";
-                });
+    public ResponseEntity<Object> partialUpdate(@PathVariable Long id, @RequestBody PartialUpdateUserDto dto) {
+        try {
+            return ResponseEntity.ok(service.partialUpdate(id, dto));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(e.getMessage()));
+        }
     }
 
     @DeleteMapping("/{id}")
-    public Object delete(@PathVariable Long id) {
-        boolean exists = users.removeIf(u -> u.getId().equals(id));
-        if (!exists) {
-            return new Object() {
-                public String error = "User not found";
-            };
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
+        try {
+            service.delete(id);
+            return ResponseEntity.ok(new Object() {
+                public final String message = "Deleted successfully";
+            });
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(e.getMessage()));
         }
-        return new Object() {
-            public String message = "Deleted successfully";
-        };
     }
 }
