@@ -1,13 +1,17 @@
 package ec.edu.ups.icc.fundamentos01.products.dtos;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 public class PartialUpdateProductDto {
 
-    
-
+    @Size(min = 3, max = 150, message = "El nombre debe tener entre 3 y 150 caracteres")
     private String name;
+
+    @Min(value = 0, message = "El precio mínimo es 0")
     private Double price;
+
+    @Min(value = 0, message = "El stock mínimo es 0")
     private Integer stock;
 
     public PartialUpdateProductDto() {

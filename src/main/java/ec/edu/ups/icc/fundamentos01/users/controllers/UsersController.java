@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import ec.edu.ups.icc.fundamentos01.core.dto.ErrorResponseDto;
 import ec.edu.ups.icc.fundamentos01.users.dtos.CreateUserDto;
 import ec.edu.ups.icc.fundamentos01.users.dtos.PartialUpdateUserDto;
@@ -45,12 +46,12 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> create(@RequestBody CreateUserDto dto) {
+    public ResponseEntity<UserResponseDto> create(@Valid @RequestBody CreateUserDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody UpdateUserDto dto) {
+    public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody UpdateUserDto dto) {
         try {
             return ResponseEntity.ok(service.update(id, dto));
         } catch (IllegalStateException e) {
@@ -59,7 +60,7 @@ public class UsersController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> partialUpdate(@PathVariable Long id, @RequestBody PartialUpdateUserDto dto) {
+    public ResponseEntity<Object> partialUpdate(@PathVariable Long id, @Valid @RequestBody PartialUpdateUserDto dto) {
         try {
             return ResponseEntity.ok(service.partialUpdate(id, dto));
         } catch (IllegalStateException e) {

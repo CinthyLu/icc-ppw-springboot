@@ -1,4 +1,24 @@
+# Programación y Plataformas Web
+
+# Frameworks Backend: Spring Boot – API REST y CRUD Inicial sin Servicios
+
+<div align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" width="100" alt="Spring Boot Logo">
+</div>
+
+### Autores
+
+**Cinthya Ramón**
+
+[cramonm1@ups.edu.ec](mailto:cramonm1@ups.edu.ec)
+
+GitHub: [CinthyLu](https://github.com/CinthyLu)
+
+---
+
+
 # Práctica 4: Controladores + Servicios + Lógica de Negocio (Spring Boot)
+
 
 Este documento contiene las evidencias y resultados correspondientes al desarrollo de la **Práctica 4**, enfocado en la estructuración de la arquitectura de la aplicación moviendo toda la lógica de negocio a la capa de servicios e implementando inyección de dependencias.
 

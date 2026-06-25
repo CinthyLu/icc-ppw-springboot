@@ -1,3 +1,25 @@
+# Programación y Plataformas Web
+
+# Frameworks Backend: Spring Boot – API REST y CRUD Inicial sin Servicios
+
+<div align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" width="100" alt="Spring Boot Logo">
+</div>
+
+---
+
+
+### Autores
+
+**Cinthya Ramón**
+
+[cramonm1@ups.edu.ec](mailto:cramonm1@ups.edu.ec)
+
+GitHub: [CinthyLu](https://github.com/CinthyLu)
+
+---
+
+
 # Práctica 5: Persistencia con PostgreSQL, Entidades JPA y Repositorios
 
 Este documento recopila las evidencias de funcionamiento de la **Práctica 5**, donde se reemplazó el almacenamiento en memoria por una base de datos PostgreSQL real conectada a través de Spring Data JPA e Hibernate, implementando herencia de auditoría y lógica de mappers extendida.
