@@ -35,7 +35,7 @@ public class UserMapper {
         model.setId(entity.getId());
         model.setName(entity.getName());
         model.setEmail(entity.getEmail());
-        model.setPasswordHash(entity.getPasswordHash());
+        model.setPasswordHash(entity.getPasswordHash()); // para el hash
         model.setCreatedAt(entity.getCreatedAt());
         model.setUpdatedAt(entity.getUpdatedAt());
         model.setDeleted(entity.isDeleted());
@@ -62,6 +62,7 @@ public class UserMapper {
         response.setId(model.getId());
         response.setName(model.getName());
         response.setEmail(model.getEmail());
+        response.setPassword(model.getPasswordHash()); // para que salga el hash de la contraseña
         return response;
     }
 }
